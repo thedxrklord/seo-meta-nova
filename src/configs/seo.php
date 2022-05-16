@@ -32,7 +32,7 @@ return [
     | Show seo form on create page
     |
     */
-    'show_on_create' => env('SEO_SHOW_ON_CREATE', false),
+    'show_on_create' => env('SEO_SHOW_ON_CREATE', true),
 
     /*
     |--------------------------------------------------------------------------

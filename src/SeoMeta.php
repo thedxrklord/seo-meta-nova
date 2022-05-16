@@ -33,9 +33,9 @@ class SeoMeta extends Field
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|callable|null  $attribute
-     * @param  callable|null  $resolveCallback
+     * @param string $name
+     * @param string|callable|null $attribute
+     * @param callable|null $resolveCallback
      * @return void
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
@@ -45,7 +45,7 @@ class SeoMeta extends Field
         $this->file_disk = config('seo.disk');
 
         $this->withMeta([
-            'hostname'     => url(''),
+            'hostname' => url(''),
             'title_format' => config('seo.title_formatter'),
             'follow_type_options' => config('seo.follow_type_options'),
         ]);
@@ -58,8 +58,8 @@ class SeoMeta extends Field
     /**
      * Resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed $resource
+     * @param string|null $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -130,22 +130,22 @@ class SeoMeta extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
-     * @return void
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
+     * @return \Closure
      */
     protected function fillAttributeFromRequest(NovaRequest $request,
-                                                $requestAttribute,
-                                                $model,
-                                                $attribute)
+                                                            $requestAttribute,
+                                                            $model,
+                                                            $attribute)
     {
-        $has_change = false;
-        $relationship = $model->{$attribute} ?? new SeoMetaItem;
+        return function () use ($request, $requestAttribute, $model, $attribute) {
+            $has_change = false;
+            $relationship = $model->{$attribute} ?? new SeoMetaItem;
 
-        if($model->id){
-            if(!$relationship->seo_metaable_type){
+            if (!$relationship->seo_metaable_type) {
                 $relationship->seo_metaable_type = get_class($model);
                 $relationship->seo_metaable_id = $model->id;
                 $has_change = true;
@@ -154,9 +154,9 @@ class SeoMeta extends Field
                 $value = json_decode($request[$requestAttribute]);
 
                 $relationship->fill([
-                    'title'       => $value->title ?? null,
+                    'title' => $value->title ?? null,
                     'description' => $value->description ?? null,
-                    'keywords'    => $value->keywords ?? null,
+                    'keywords' => $value->keywords ?? null,
                     'follow_type' => $value->follow_type ?? null,
                     'params' => [
                         'title_format' => $model->getSeoTitleFormatter()
@@ -165,7 +165,7 @@ class SeoMeta extends Field
                 $has_change = true;
             }
 
-            $file_attr = $requestAttribute.'_image';
+            $file_attr = $requestAttribute . '_image';
             if ($request->hasFile($file_attr) && $request->file($file_attr)->isValid()) {
                 $image = $request->{$file_attr};
 
@@ -182,9 +182,9 @@ class SeoMeta extends Field
                 }
             }
 
-            if($has_change){
+            if ($has_change) {
                 $relationship->save();
             }
-        }
+        };
     }
 }
