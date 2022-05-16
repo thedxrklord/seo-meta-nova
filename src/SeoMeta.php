@@ -49,7 +49,10 @@ class SeoMeta extends Field
             'title_format' => config('seo.title_formatter'),
             'follow_type_options' => config('seo.follow_type_options'),
         ]);
-        $this->hideWhenCreating();
+
+        if (config('seo.show_on_create')) {
+            $this->hideWhenCreating();
+        }
     }
 
     /**
