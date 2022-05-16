@@ -26,10 +26,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sitemap status
+    | Show on create
     |--------------------------------------------------------------------------
     |
-    | Should there be a sitemap available
+    | Show seo form on create page
     |
     */
     'show_on_create' => env('SEO_SHOW_ON_CREATE', false),

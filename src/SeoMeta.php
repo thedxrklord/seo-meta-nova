@@ -50,7 +50,7 @@ class SeoMeta extends Field
             'follow_type_options' => config('seo.follow_type_options'),
         ]);
 
-        if (config('seo.show_on_create')) {
+        if (!config('seo.show_on_create')) {
             $this->hideWhenCreating();
         }
     }
