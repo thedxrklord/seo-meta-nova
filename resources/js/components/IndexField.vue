@@ -15,13 +15,13 @@ export default {
                         value.follow_type
                     ) >= 0
                 ) {
-                    if (value.title) {
-                        return "bg-red-500";
+                    if (value.title && value.description) {
+                        return "bg-green-500";
                     }
-                    return "bg-yellow-500";
+                  return "bg-yellow-500";
                 }
             }
-            return "bg-green-500";
+            return "bg-red-500";
         }
     }
 };
